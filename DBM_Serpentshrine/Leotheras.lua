@@ -1,3 +1,10 @@
+-- whirlwind lasts 12 seconds
+-- time between whirlwinds is 15 seconds
+-- elf form lasts 1 min
+-- demon form lasts 1 min
+
+-- start fight->15+12+15+12+6->demon (1min) -> elf
+
 local Leotheras = DBM:NewBossMod("Leotheras", DBM_LEO_NAME, DBM_LEO_DESCRIPTION, DBM_COILFANG, DBM_SERPENT_TAB, 5);
 
 Leotheras.Version			= "1.1";
@@ -93,7 +100,7 @@ function Leotheras:OnEvent(event, arg1)
 		self:ScheduleSelf(40, "PhaseWarn");
 		self:EndStatusBarTimer("Normal Form");
 		self:EndStatusBarTimer("Demon Form");
-		self:StartStatusBarTimer(45, "Demon Form", "Interface\\Icons\\Spell_Shadow_Metamorphosis");
+		self:StartStatusBarTimer(60, "Demon Form", "Interface\\Icons\\Spell_Shadow_Metamorphosis");
 		
 		self:StartStatusBarTimer(15, "Next Whirlwind", "Interface\\Icons\\Ability_Whirlwind");
 		
