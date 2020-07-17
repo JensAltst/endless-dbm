@@ -1,4 +1,4 @@
-﻿local Vashj = DBM:NewBossMod("Vashj", DBM_VASHJ_NAME, DBM_VASHJ_DESCRIPTION, DBM_COILFANG, DBM_SERPENT_TAB, 6);
+local Vashj = DBM:NewBossMod("Vashj", DBM_VASHJ_NAME, DBM_VASHJ_DESCRIPTION, DBM_COILFANG, DBM_SERPENT_TAB, 6);
 
 Vashj.Version			= "1.1";
 Vashj.Author			= "Tandanu";
@@ -97,16 +97,16 @@ function Vashj:OnEvent(event, arg1)
 			phase = 2;
 			self:Announce(DBM_VASHJ_WARN_PHASE2, 1);
 			
-			self:StartStatusBarTimer(62, "Strider", "Interface\\Icons\\INV_Misc_Fish_13");
+			self:StartStatusBarTimer(60, "Strider", "Interface\\Icons\\INV_Misc_Fish_13");
 			self:StartStatusBarTimer(53, "Tainted Elemental", "Interface\\Icons\\Spell_Nature_ElementalShields");
-			self:StartStatusBarTimer(47.5, "Naga", "Interface\\Icons\\INV_Misc_MonsterHead_02");
+			self:StartStatusBarTimer(45, "Naga", "Interface\\Icons\\INV_Misc_MonsterHead_02");
 			
-			self:ScheduleSelf(47.5, "Spawn", "Naga");
+			self:ScheduleSelf(45, "Spawn", "Naga");
 			self:ScheduleSelf(53, "Spawn", "Elemental");
-			self:ScheduleSelf(62, "Spawn", "Strider");
-			self:ScheduleSelf(42.5, "SpawnSoonWarn", "Naga");
-			self:ScheduleSelf(48, "SpawnSoonWarn", "Elemental");
-			self:ScheduleSelf(57, "SpawnSoonWarn", "Strider");
+			self:ScheduleSelf(60, "Spawn", "Strider");
+			self:ScheduleSelf(41, "SpawnSoonWarn", "Naga");
+			self:ScheduleSelf(49, "SpawnSoonWarn", "Elemental");
+			self:ScheduleSelf(56, "SpawnSoonWarn", "Strider");
 		elseif string.find(arg1, DBM_VASHJ_YELL_PHASE3) then
 			self:SendSync("Phase3");
 		end
