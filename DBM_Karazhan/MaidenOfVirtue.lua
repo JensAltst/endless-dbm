@@ -16,7 +16,6 @@ Maiden:AddOption("RangeCheck", true, DBM_MOV_OPTION_1, function()
 end);
 
 Maiden:AddBarOption("Repentance")
-Maiden:AddBarOption("Next Repentance")
 
 Maiden:RegisterEvents(
 	"CHAT_MSG_MONSTER_YELL",
@@ -27,7 +26,7 @@ Maiden:RegisterCombat("YELL", DBM_MOV_YELL_PULL);
 
 function Maiden:OnCombatStart()
 	self:EndStatusBarTimer("Repentance");
-	self:StartStatusBarTimer(17, "Next Repentance", "Interface\\Icons\\Spell_Holy_PrayerOfHealing");
+	self:StartStatusBarTimer(17, "Repentance", "Interface\\Icons\\Spell_Holy_PrayerOfHealing");
 	self:ScheduleSelf(13, "RepWarning");
 
 	if self.Options.RangeCheck then
@@ -60,7 +59,6 @@ end
 function Maiden:OnSync(msg)
 	if msg == "Rep" then
 		self:Announce(DBM_MOV_WARN_REP, 3);
-		self:EndStatusBarTimer("Next Repentance");
 		self:UnScheduleSelf("RepWarning");
 		self:StartStatusBarTimer(25, "Repentance", "Interface\\Icons\\Spell_Holy_PrayerOfHealing");
 		self:ScheduleSelf(21, "RepWarning");
