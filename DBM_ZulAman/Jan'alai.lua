@@ -29,8 +29,8 @@ function Jan:OnEvent(event)
 	if event == "CHAT_MSG_MONSTER_YELL" then
 		if arg1 == DBM_JANALAI_YELL_EXPLOSION then
 			self:Announce(DBM_JANALAI_WARN_EXPLOSION, 3)
-			self:StartStatusBarTimer(11.4, "Explosion", "Interface\\Icons\\Spell_Shadow_MindBomb")
-			self:ScheduleAnnounce(10.4, DBM_JANALAI_WARN_EXPLOSION_INC, 4)
+			self:StartStatusBarTimer(10, "Explosion", "Interface\\Icons\\Spell_Shadow_MindBomb")
+			self:ScheduleAnnounce(10 DBM_JANALAI_WARN_EXPLOSION_INC, 4)
 		elseif arg1 == DBM_JANALAI_YELL_HATCHER then
 			self:Announce(DBM_JANALAI_WARN_HATCHER, 2)
 			self:ScheduleAnnounce(80, DBM_JANALAI_WARN_HATCHER_SOON, 1)
