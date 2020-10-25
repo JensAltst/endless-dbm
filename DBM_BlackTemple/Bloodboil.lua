@@ -31,8 +31,8 @@ function Bloodboil:OnCombatStart(delay)
 	self:ScheduleSelf(570 - delay, "EnrageWarn", 30);
 	self:ScheduleSelf(590 - delay, "EnrageWarn", 10);
 	
-	self:StartStatusBarTimer(57.5, "Fel Rage", "Interface\\Icons\\Spell_Fire_ElementalDevastation");
-	self:ScheduleSelf(52.5, "FelRageWarn");
+	self:StartStatusBarTimer(60, "Fel Rage", "Interface\\Icons\\Spell_Fire_ElementalDevastation");
+	self:ScheduleSelf(55, "FelRageWarn");
 	self:StartStatusBarTimer(11.5, "Bloodboil", "Interface\\Icons\\Spell_Shadow_BloodBoil");
 end
 
@@ -50,9 +50,9 @@ function Bloodboil:OnEvent(event, arg1)
 		if arg1.spellId == 40594 then
 			boilCounter = 0;
 			self:Announce(DBM_BLOODBOIL_WARN_NORMALPHASE, 3)
-			self:ScheduleSelf(52, "FelRageWarn");
-			self:StartStatusBarTimer(57, "Fel Rage", "Interface\\Icons\\Spell_Fire_ElementalDevastation");
-			self:StartStatusBarTimer(10, "Bloodboil", "Interface\\Icons\\Spell_Shadow_BloodBoil");
+			self:ScheduleSelf(55, "FelRageWarn");
+			self:StartStatusBarTimer(60, "Fel Rage", "Interface\\Icons\\Spell_Fire_ElementalDevastation");
+			self:StartStatusBarTimer(11.5, "Bloodboil", "Interface\\Icons\\Spell_Shadow_BloodBoil");
 		end
 	elseif event == "FelRageWarn" then
 		self:Announce(DBM_BLOODBOIL_WARN_FELRAGE_SOON, 2);
@@ -73,7 +73,7 @@ function Bloodboil:OnSync(msg)
 	if msg == "Bloodboil" then
 		boilCounter = boilCounter + 1;
 		self:Announce(DBM_BLOODBOIL_WARN_BLOODBOIL:format(boilCounter), 1);
-		self:StartStatusBarTimer(10, "Bloodboil", "Interface\\Icons\\Spell_Shadow_BloodBoil");
+		self:StartStatusBarTimer(11.5, "Bloodboil", "Interface\\Icons\\Spell_Shadow_BloodBoil");
 	elseif msg:sub(0, 7) == "FelRage" then
 		msg = msg:sub(8);
 		self:EndStatusBarTimer("Bloodboil");
