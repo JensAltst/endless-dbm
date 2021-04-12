@@ -1,10 +1,14 @@
 local Nightbane = DBM:NewBossMod("Nightbane", DBM_NB_NAME, DBM_NB_DESCRIPTION, DBM_KARAZHAN, DBM_KARAZHAN_TAB, 13);
---Edit by Nightkiller@¤é¸¨ªh¿A(kc10577@¤Ú«¢;Azael)
+--Edit by Nightkiller@ï¿½é¸¨ï¿½hï¿½A(kc10577@ï¿½Ú«ï¿½;Azael)
 Nightbane.Version			= "1.2";
 Nightbane.Author			= "Tandanu";
 Nightbane.BoneRain			= 0;
-Nightbane.LastYell			= 0;
+--Nightbane.LastYell			= 0;
 Nightbane.LastSmokeTarget	= nil;
+--Changed CombatStartLandingTimer 34->49
+--Changed FearTimer 31.5->48.5
+--Changed AirTimer 57->43
+
 
 Nightbane:RegisterCombat("YELL", DBM_NB_YELL_PULL);
 
@@ -31,15 +35,15 @@ Nightbane:AddBarOption("Fear")
 function Nightbane:OnEvent(event, arg1)
 	if event == "CHAT_MSG_MONSTER_EMOTE" then
 		if arg1 == DBM_NB_EMOTE_PULL then
-			self:StartStatusBarTimer(34, "Nightbane", "Interface\\Icons\\Ability_Mount_Undeadhorse");
+			self:StartStatusBarTimer(49, "Nightbane", "Interface\\Icons\\Ability_Mount_Undeadhorse");
 		end
 		
 	elseif event == "SPELL_CAST_START" then
-		if arg1.spellId == 36922 then -- 3/26 22:16:44.062  SPELL_CAST_START,0xF13000434900162B,"Nightbane",0x10a48,0x0000000000000000,nil,0x80000000,36922,"Bellowing Roar",0x1
-			self:StartStatusBarTimer(31.5, "Next Fear", "Interface\\Icons\\Spell_Shadow_PsychicScream");
-			self:StartStatusBarTimer(1.5, "Fear", "Interface\\Icons\\Spell_Shadow_PsychicScream");
+		if arg1.spellId == 36922 or arg1.spellId == 39427 or arg1.spellId == 40636 or arg1.spellId == 44863 or arg1.spellId == 22686 then
+			self:StartStatusBarTimer(48.5, "Next Fear", "Interface\\Icons\\Spell_Shadow_PsychicScream");
+			self:StartStatusBarTimer(2.5, "Fear", "Interface\\Icons\\Spell_Shadow_PsychicScream");
 			self:Announce(DBM_NB_FEAR_WARN, 3);
-			self:ScheduleSelf(31, "FearWarn");
+			self:ScheduleSelf(48, "FearWarn");
 		end
 		
 	elseif event == "FearWarn" then
@@ -49,15 +53,15 @@ function Nightbane:OnEvent(event, arg1)
 		if arg1 == DBM_NB_YELL_AIR then
 			self.LastSmokeTarget = nil;
 			self:Announce(DBM_NB_AIR_WARN, 1);
-			self:ScheduleSelf(47, "DownFIRSTWarn");
-			self:ScheduleSelf(54, "DownSECWarn");
-			self:StartStatusBarTimer(57, "Air Phase", "Interface\\AddOns\\DBM_API\\Textures\\CryptFiendBurrow");
-		elseif (arg1 == DBM_NB_YELL_GROUND or arg1 == DBM_NB_YELL_GROUND2) and ((GetTime() - self.LastYell) > 45) then -- he sometimes yells twice...(but seems to be fixed? not sure)
-			self.LastYell = GetTime();
-			self:ScheduleSelf(3, "UpdateAirTimer");
+			self:ScheduleSelf(28, "DownFIRSTWarn");
+			self:ScheduleSelf(38, "DownSECWarn");
+			self:StartStatusBarTimer(43, "Air Phase", "Interface\\AddOns\\DBM_API\\Textures\\CryptFiendBurrow");
+		--elseif (arg1 == DBM_NB_YELL_GROUND or arg1 == DBM_NB_YELL_GROUND2) and ((GetTime() - self.LastYell) > 45) then -- he sometimes yells twice...(but seems to be fixed? not sure)
+			--self.LastYell = GetTime();
+			--self:ScheduleSelf(3, "UpdateAirTimer");
 		end
-	elseif event == "UpdateAirTimer" then --stupid bug in old versions and MinVerToSync does not work with UpdateStatusBarTimer -_-
-		self:UpdateStatusBarTimer("Air Phase", 43, 57);
+	--elseif event == "UpdateAirTimer" then --stupid bug in old versions and MinVerToSync does not work with UpdateStatusBarTimer -_-
+		--self:UpdateStatusBarTimer("Air Phase", 43, 57);
 		
 	elseif event == "DownFIRSTWarn" then
 		self:Announce(DBM_NB_DOWN_WARN, 2);

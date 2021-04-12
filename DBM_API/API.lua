@@ -171,7 +171,7 @@
 --  updated the Serpentshrine zone localizations
 --  added zhTW localization for Karazhan (thanks to Dean, kc10577 and jrkid)
 --  updated esES localization (thanks to Geran from Dun Modr)
---  updated deDE localization (thanks to Xerôn)
+--  updated deDE localization (thanks to Xerï¿½n)
 --  /dbm stop will no longer remove custom timers
 --  the Void Reaver boss mod will now detect Arcane Orb on dps warriors
 --  the Maiden of Virtue mod will now use her yell to detect repentance
@@ -433,6 +433,7 @@ DBMInfoFramePositions = {};
 
 DBM.VarsNotLoaded = true;
 
+DBM.DebugMode = false;
 local namesWereHidden;
 
 local randomNumber = math.random(1, 1000)
@@ -836,6 +837,9 @@ function DBM.OnLoad()
 	SLASH_LVCLEANUP1 = "/cleanup";
 	SlashCmdList["LVCLEANUP"] = DBM.CleanUp;
 
+	SLASH_LVDEBUGOUTPUT1 = "/ddebug"
+	SlashCmdList["LVDEBUGOUTPUT"] = DBM.ToggleDebugOutput;
+
 	SLASH_DRT_PULL1 = "/pull";
 	SlashCmdList["DRT_PULL"] = function(msg) DBM.Announce_Pull(msg); end;
 	
@@ -921,6 +925,15 @@ function DBM.CleanUp()
 		end
 		DBM.AddMsg(DBM_MSG_CLEANICONS);
 	end
+end
+
+function DBM.ToggleDebugOutput()
+	if DBM.DebugMode then
+		DBM.DebugMode = false;
+	else
+		DBM.DebugMode = true;
+	end
+
 end
 
 function DBM.LoadAddOns()
@@ -1111,7 +1124,7 @@ end
 function DBM.OnVarsLoaded()
 	DBM.Register();
 	
---	DBM.AddMsg(string.format(DBM_LOADED, DBM.BetaVersion or DBM.Version));
+    --DBM.AddMsg(string.format(DBM_LOADED, DBM.BetaVersion or DBM.Version));
 	
 	for index, value in pairs(DBM.Options) do --load saved vars
 		if DBM_SavedVars.DBM[index] == nil then
@@ -1207,7 +1220,7 @@ function DBM.OnVarsLoaded()
 				}
 				DBM.Options.HugeBars.EnableStatusBars = true
 			end,
---[[		OnHide = function()
+	--[[		OnHide = function()
 				for i = 1, 4 do
 					if getglobal("StaticPopup"..i) then
 						if getglobal("StaticPopup"..i).which == "DBMFirstTime679Loaded" then
@@ -1222,7 +1235,7 @@ function DBM.OnVarsLoaded()
 			whileDead = 1,
 		}
 		StaticPopup_Show("DBMFirstTime679Loaded")
---[[	for i = 1, 4 do
+	--[[	for i = 1, 4 do
 			if getglobal("StaticPopup"..i) then
 				if getglobal("StaticPopup"..i).which == "DBMFirstTime679Loaded" then
 					getglobal("StaticPopup"..i):SetWidth(480)
@@ -1333,7 +1346,7 @@ function DBM.OnVarsLoaded()
 	SlashCmdList["LVDISTANCE"] = DBM_Gui_DistanceFrame;
 	RaidWarningFrame:ClearAllPoints();
 	RaidWarningFrame:SetPoint("CENTER", "UIParent", "TOP", DBM.Options.Gui["RaidWarning_PosX"], DBM.Options.Gui["RaidWarning_PosY"]);
---	RaidWarningFrame:SetFont(DBM.Options.Gui["RaidWarning_Font"], DBM.Options.Gui["RaidWarning_Height"], "");
+	--	RaidWarningFrame:SetFont(DBM.Options.Gui["RaidWarning_Font"], DBM.Options.Gui["RaidWarning_Height"], "");
 
 	DBMWarningFrame:ClearAllPoints();
 	DBMWarningFrame:SetPoint("CENTER", "UIParent", "BOTTOM", DBM.Options.Gui["SelfWarning_PosX"], DBM.Options.Gui["SelfWarning_PosY"]);
@@ -1343,11 +1356,11 @@ function DBM.OnVarsLoaded()
 	if( DBM.Options.Gui["SelfWarning_Enable"] == false ) then	DBMWarningFrame:Hide();	end
 
 	if (DBM.Options.Gui["HidePlayerNamesInRaid"] and GetNumRaidMembers() > 0) then
---		if (tonumber(GetCVar("UnitNamePlayer")) == 1) then
---			DBM.Options.Gui["HidePlayerNames"] = true;
---			SetCVar("UnitNamePlayer", 0);
---			namesWereHidden = true
---		end
+	--		if (tonumber(GetCVar("UnitNamePlayer")) == 1) then
+	--			DBM.Options.Gui["HidePlayerNames"] = true;
+	--			SetCVar("UnitNamePlayer", 0);
+	--			namesWereHidden = true
+	--		end
 	end
 	
 	if IsAddOnLoaded("LVBM_API") then
@@ -1446,8 +1459,8 @@ function DBM.OnEvent(event, ...)
 				DBM.AddSyncMessage("HI!", true);
 				DBM.Schedule(5, DBM.RequestBars);
 				if DBM.Options.Gui.HidePlayerNamesInRaid then
---					SetCVar("UnitNamePlayer", 0);
---					namesWereHidden = true
+		--					SetCVar("UnitNamePlayer", 0);
+		--					namesWereHidden = true
 				end
 			end
 			DBM.Raid = {};
@@ -1466,8 +1479,8 @@ function DBM.OnEvent(event, ...)
 			if DBM.InRaid then				
 				DBM.InRaid = false;
 				if DBM.Options.Gui.HidePlayerNamesInRaid and namesWereHidden then
---					SetCVar("UnitNamePlayer", 1);
---					namesWereHidden = false
+		--					SetCVar("UnitNamePlayer", 1);
+		--					namesWereHidden = false
 				end
 			end
 		end
@@ -1579,6 +1592,7 @@ function DBM.OnEvent(event, ...)
 			end
 		end
 		DBM.OnCombatLogEvent(...)
+		DBM.Debugging(...)
 	end
 
 	
@@ -2147,7 +2161,7 @@ function DBM.StartStatusBarTimer(timer, name, icon, noBroadcast, syncedBy, start
 				end
 			end
 			if DBM.AddOns[addon]["MinRevision"] and syncedBy ~= DBM_LOCAL then	-- by Nitram!
---				DBM.AddMsg(DBM.AddOns[addon]["MinRevision"])
+	--				DBM.AddMsg(DBM.AddOns[addon]["MinRevision"])
 				if not DBM.SyncInfo.DispVers[syncedBy] or not DBM.SyncInfo.DispVers[syncedBy][2] or (tonumber(DBM.SyncInfo.DispVers[syncedBy][2]) < tonumber(DBM.AddOns[addon]["MinRevision"])) then
 					return;
 				end
@@ -2725,6 +2739,51 @@ function DBM.EndHideWhispers(bossName)
 	DBM.HideWhispers = false;
 end
 
+function DBM.Debugging(TableorList, ...)
+
+	--<Debug>[/1=table: 1EFD9C70//2=SPELL_PERIODIC_ENERGIZE//3=Jocko//4=Jocko//5=1304//6=29131//7=Bloodrage/]151379.723
+	--<Debug>[/1=1618215858.436//2=SPELL_PERIODIC_ENERGIZE//3=0x000000000000375F//4=Jocko//5=1304//6=0x000000000000375F//7=Jocko//8=1304//9=29131//10=Bloodrage//11=1//12=1//13=1/]151379.723
+	
+	if DBM.DebugMode then
+		local debugMsg = "<Debug>";
+		debugMsg = debugMsg.."[";
+	
+		if type(TableorList) == "table" then
+			debugMsg = debugMsg.."1={"..tostring(TableorList).."("..tostring(is_array(TableorList))..")";
+			for index, value in pairs(TableorList) do
+				debugMsg = debugMsg..tostring(index).."="..tostring(value).."/"
+			end
+			debugMsg = debugMsg.."}"
+		else
+			debugMsg = debugMsg.."1="..tostring(TableorList).."/"
+		end
+
+		local argsX = {...}
+		for i,v in pairs(argsX) do
+			debugMsg = debugMsg..tostring(i+1).."="..tostring(v).."/";
+		end
+		debugMsg = debugMsg.."]"
+		DBM.AddMsg(debugMsg);
+	end
+end	
+
+function is_array(table)
+    local max = 0
+    local count = 0
+    for k, v in pairs(table) do
+        if type(k) == "number" then
+            if k > max then max = k end
+            count = count + 1
+        else
+            return -1
+        end
+    end
+    if max > count * 2 then
+        return -1
+    end
+
+    return max
+end 
 --------------------
 --Special Warnings--
 --------------------
@@ -4433,20 +4492,20 @@ function RaidWarningFrame_OnEvent(self, event, message)
 			end
 			return capture
 		end)
--- bugged! it doesn't support two different colors!		
---[[	if message:find("^%*%*%*%s%s.+%s%s%*%*%*$") then -- color 2
-			RaidNotice_AddMessage(self, message:sub(6, -6), DBM.Options.RaidWarningColors[2])
-		elseif message:find("^%*%*%*%s.+%s%*%*%*$") then -- color 1
-			RaidNotice_AddMessage(self, message:sub(5, -5), DBM.Options.RaidWarningColors[1])
-		elseif message:find("^%s%*%*%*%s.+%s%*%*%*%s$") then  -- color 3
-			RaidNotice_AddMessage(self, message:sub(6, -6), DBM.Options.RaidWarningColors[3])
-		elseif message:find("^%s%s%*%*%*%s%s.+%s%s%*%*%*%s%s$") then -- color 5
-			RaidNotice_AddMessage(self, message:sub(8, -8), DBM.Options.RaidWarningColors[5])
-		elseif message:find("^%s%s%*%*%*%s.+%s%*%*%*%s%s$") then -- color 4
-			RaidNotice_AddMessage(self, message:sub(7, -7), DBM.Options.RaidWarningColors[4])
-		else
-			RaidNotice_AddMessage(self, message, ChatTypeInfo["RAID_WARNING"])
-		end]]--
+	-- bugged! it doesn't support two different colors!		
+	--[[	if message:find("^%*%*%*%s%s.+%s%s%*%*%*$") then -- color 2
+				RaidNotice_AddMessage(self, message:sub(6, -6), DBM.Options.RaidWarningColors[2])
+			elseif message:find("^%*%*%*%s.+%s%*%*%*$") then -- color 1
+				RaidNotice_AddMessage(self, message:sub(5, -5), DBM.Options.RaidWarningColors[1])
+			elseif message:find("^%s%*%*%*%s.+%s%*%*%*%s$") then  -- color 3
+				RaidNotice_AddMessage(self, message:sub(6, -6), DBM.Options.RaidWarningColors[3])
+			elseif message:find("^%s%s%*%*%*%s%s.+%s%s%*%*%*%s%s$") then -- color 5
+				RaidNotice_AddMessage(self, message:sub(8, -8), DBM.Options.RaidWarningColors[5])
+			elseif message:find("^%s%s%*%*%*%s.+%s%*%*%*%s%s$") then -- color 4
+				RaidNotice_AddMessage(self, message:sub(7, -7), DBM.Options.RaidWarningColors[4])
+			else
+				RaidNotice_AddMessage(self, message, ChatTypeInfo["RAID_WARNING"])
+			end]]--
 		
 		if message:find("^%*%*%*%s%s.+%s%s%*%*%*$") then -- color 2
 			message = "|cff"..

@@ -3,6 +3,8 @@ local Moroes = DBM:NewBossMod("Moroes", DBM_MOROES_NAME, DBM_MOROES_DESCRIPTION,
 Moroes.Version			= "1.0";
 Moroes.Author			= "Tandanu";
 Moroes.LastVanish		= 0;
+--Changed FirstVanish 33->30
+--Changed RecurringVanish 36.5->24.5
 
 Moroes:RegisterEvents(
 	"SPELL_AURA_APPLIED",
@@ -19,8 +21,8 @@ Moroes:AddBarOption("Vanish")
 Moroes:RegisterCombat("YELL", DBM_MOROES_YELL_START);
 
 function Moroes:OnCombatStart(delay)
-	self:StartStatusBarTimer(33, "Vanish", "Interface\\Icons\\Ability_Vanish");
-	self:ScheduleSelf(33, "SoonWarning");
+	self:StartStatusBarTimer(30, "Vanish", "Interface\\Icons\\Ability_Vanish");
+	self:ScheduleSelf(30, "SoonWarning");
 end
 
 function Moroes:OnEvent(event, arg1)	
@@ -40,8 +42,8 @@ function Moroes:OnEvent(event, arg1)
 			end
 			self:EndStatusBarTimer("Vanish");
 			if (GetTime() - self.LastVanish) < 20 then
-				self:StartStatusBarTimer(36.5 - (GetTime() - self.LastVanish), "Vanish", "Interface\\Icons\\Ability_Vanish");
-				self:ScheduleSelf(31.5 - (GetTime() - self.LastVanish), "SoonWarning");
+				self:StartStatusBarTimer(24.5 - (GetTime() - self.LastVanish), "Vanish", "Interface\\Icons\\Ability_Vanish");
+				self:ScheduleSelf(19.5 - (GetTime() - self.LastVanish), "SoonWarning");
 			end
 		end
 	

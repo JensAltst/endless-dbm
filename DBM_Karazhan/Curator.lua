@@ -2,6 +2,9 @@ local Curator = DBM:NewBossMod("Curator", DBM_CURA_NAME, DBM_CURA_DESCRIPTION, D
 
 Curator.Version			= "1.0";
 Curator.Author			= "Tandanu";
+--Changed FirstEvoTimer 109->91
+--Changed RecurringEvoTimer 115->101
+
 
 Curator:RegisterEvents("CHAT_MSG_MONSTER_YELL");
 
@@ -21,9 +24,9 @@ Curator:AddOption("RangeCheck", true, DBM_MOV_OPTION_1, function()
 end);
 
 function Curator:OnCombatStart()
-	self:StartStatusBarTimer(109, "Next Evocation", "Interface\\Icons\\Spell_Nature_Purge");
-	self:ScheduleSelf(106, "EvoWarn", "soon");
-	self:ScheduleAnnounce(49, DBM_CURA_EVO_1MIN, 1)
+	self:StartStatusBarTimer(91, "Next Evocation", "Interface\\Icons\\Spell_Nature_Purge");
+	self:ScheduleSelf(89, "EvoWarn", "soon");
+	self:ScheduleAnnounce(31, DBM_CURA_EVO_1MIN, 1)
 	
 	if self.Options.RangeCheck then
 		DBM_Gui_DistanceFrame_Show();
@@ -39,12 +42,12 @@ end
 function Curator:OnEvent(event, arg1)
 	if event == "CHAT_MSG_MONSTER_YELL" then
 		if arg1 == DBM_CURA_YELL_OOM then
-			self:StartStatusBarTimer(115, "Next Evocation", "Interface\\Icons\\Spell_Nature_Purge");
+			self:StartStatusBarTimer(101, "Next Evocation", "Interface\\Icons\\Spell_Nature_Purge");
 			self:StartStatusBarTimer(20, "Evocation", "Interface\\Icons\\Spell_Nature_Purge");
 			self:Announce(DBM_CURA_EVO_NOW, 3);
-			self:ScheduleAnnounce(55, DBM_CURA_EVO_1MIN, 1)
+			self:ScheduleAnnounce(41, DBM_CURA_EVO_1MIN, 1)
 			self:UnScheduleSelf("EvoWarn", "soon");
-			self:ScheduleSelf(112, "EvoWarn", "soon");
+			self:ScheduleSelf(99, "EvoWarn", "soon");
 		end
 		
 	elseif event == "EvoWarn" then

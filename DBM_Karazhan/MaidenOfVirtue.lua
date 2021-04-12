@@ -3,6 +3,7 @@ local Maiden = DBM:NewBossMod("Maiden", DBM_MOV_NAME, DBM_MOV_DESCRIPTION, DBM_K
 Maiden.Version		= "1.2";
 Maiden.Author		= "Tandanu";
 Maiden.MinVersionToSync = 2.7
+--Changed Maiden RepentenceTimer on CombatStart 17->20
 
 Maiden:AddOption("HolyFireWarn", true, DBM_MOV_OPTION_2);
 Maiden:AddOption("RangeCheck", true, DBM_MOV_OPTION_1, function()
@@ -26,8 +27,8 @@ Maiden:RegisterCombat("YELL", DBM_MOV_YELL_PULL);
 
 function Maiden:OnCombatStart()
 	self:EndStatusBarTimer("Repentance");
-	self:StartStatusBarTimer(17, "Repentance", "Interface\\Icons\\Spell_Holy_PrayerOfHealing");
-	self:ScheduleSelf(13, "RepWarning");
+	self:StartStatusBarTimer(20, "Repentance", "Interface\\Icons\\Spell_Holy_PrayerOfHealing");
+	self:ScheduleSelf(16, "RepWarning");
 
 	if self.Options.RangeCheck then
 		DBM_Gui_DistanceFrame_Show();
