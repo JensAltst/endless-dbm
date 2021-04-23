@@ -105,3 +105,10 @@ DBM_DOOMW_QUAKE_SOON	= "*** Earthquake soon ***";
 DBM_DOOMW_CHARGE		= "*** Overrun ***";
 DBM_DOOMW_CHARGE_SOON	= "*** Overrun soon ***";
 DBM_DOOMW_WARN_ENRAGE	= "*** Enrage ***";
+
+-- Simon
+DBM_SIMON_NAME          = "Simon Game Bunny";
+DBM_SIMON_APEXIS        = "Apexis Reprisal";
+DBM_SIMON_DESCRIPTION   = "Simons says tracker for lazy bastards like me";
+DBM_SIMON_BARS          = "Show Bars for Simon says";
+

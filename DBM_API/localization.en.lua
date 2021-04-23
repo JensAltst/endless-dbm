@@ -30,6 +30,7 @@ DBM_BLASTED_LANDS	= "Blasted Lands";
 DBM_AZSHARA		= "Azshara";
 DBM_HELLFIRE	= "Hellfire Peninsula";
 DBM_SHADOWMOON	= "Shadowmoon Valley";
+DBM_BLADEEDGE	= "Blade's Edge Mountains"
 
 DBM_BLACK_MORASS	= "The Black Morass";
 
@@ -64,6 +65,7 @@ DBM_BLOODRAGE			= "Bloodrage";
 DBM_REDEMPTION 		= "Spirit of Redemption";
 DBM_FEIGNDEATH			= "Feign Death";
 DBM_MINDCONTROL		= "Mind Control";
+DBM_SIMONSTART		= "Simon Game, begin game, solo (Get Reagents)";
 
 --create status bar timer localization table
 DBM_SBT = {};
@@ -280,6 +282,8 @@ DBM_OUTDOOR_LETHON		= "Lethon";
 DBM_AZUREGOS_NAME		= "Azuregos";
 DBM_KAZZAK_NAME			= "Doom Lord Kazzak";
 DBM_DOOMW_NAME			= "Doomwalker";
+DBM_SIMON_NAME			= "Simon Game Bunny";
+DBM_SIMON_APEXIS        = "Apexis Reprisal";
 
 DBM_ERROR_LVBM_STILL_LOADED	= "You did not delete the old folders, there are two versions of DBM running!\nClick on the \"Okay\" Button to disable the old version and reload your interface.\nYou don't need to delete the folder after doing so.";
 DBM_DISABLE_AND_RELOAD		= "Okay";

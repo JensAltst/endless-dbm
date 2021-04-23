@@ -434,6 +434,7 @@ DBMInfoFramePositions = {};
 DBM.VarsNotLoaded = true;
 
 DBM.DebugMode = false;
+
 local namesWereHidden;
 
 local randomNumber = math.random(1, 1000)
@@ -1542,6 +1543,7 @@ function DBM.OnEvent(event, ...)
 				if value.startMethod == "YELL" then
 					if value.startTrigger and value.startTrigger[arg1] then
 						DBM.CombatStart(index, 0);
+						DBM.Debugging(...)
 					end
 				end
 			end
@@ -1552,6 +1554,7 @@ function DBM.OnEvent(event, ...)
 				if value.startMethod == "SAY" then
 					if value.startTrigger and value.startTrigger[arg1] then
 						DBM.CombatStart(index, 0);
+						DBM.Debugging(...)
 					end
 				end
 			end
@@ -1562,11 +1565,13 @@ function DBM.OnEvent(event, ...)
 				if value.startMethod == "EMOTE" then
 					if value.startTrigger and value.startTrigger[arg1] then
 						DBM.CombatStart(index, 0);
+						DBM.Debugging(...)
 					end
 				end
 			end
 		end
 	elseif event == "COMBAT_LOG_EVENT_UNFILTERED" then
+
 		if arg2 == "SPELL_CAST_START" and arg4 == UnitName("player") and bit.band(arg5, COMBATLOG_OBJECT_TYPE_PLAYER) ~= 0 then
 			if arg10 == DBM_BLOODRAGE then
 				DBM.LastBloodrage = GetTime()
@@ -1590,9 +1595,18 @@ function DBM.OnEvent(event, ...)
 					end
 				end
 			end
+		elseif arg2 == "SPELL_CAST_SUCCESS" and arg4 == UnitName("player") and arg10 == DBM_SIMONSTART and GetRealZoneText() == DBM_BLADEEDGE then
+			DBM.Simon(...);
+		elseif arg4 == DBM_SIMON_NAME or arg10 == DBM_SIMON_APEXIS then
+			DBM.Simon(...);	
 		end
 		DBM.OnCombatLogEvent(...)
+		
+		if arg4 == DBM_MAG_NAME or arg4 == DBM_GRUUL_NAME or arg4 == DBM_SIMON_NAME or arg10 == DBM_SIMON_APEXIS then
+			DBM.Debugging(...)
+		end
 		DBM.Debugging(...)
+
 	end
 
 	
@@ -1863,6 +1877,11 @@ function DBM.OnUpdate(elapsed)
 				LoadAddOn("DBM_Outlands");
 				DBM.LoadAddOns();
 			end
+		end
+		
+		if (GetRealZoneText() == DBM_BLADEEDGE) then
+			LoadAddOn("DBM_Outlands")
+			DBM.LoadAddOns();
 		end
 	end
 	for index, value in pairs(DBM.HideDNDAFKMessages) do
@@ -2755,12 +2774,12 @@ function DBM.Debugging(TableorList, ...)
 			end
 			debugMsg = debugMsg.."}"
 		else
-			debugMsg = debugMsg.."1="..tostring(TableorList).."/"
+			debugMsg = debugMsg.."0="..tostring(TableorList).."/"
 		end
 
 		local argsX = {...}
 		for i,v in pairs(argsX) do
-			debugMsg = debugMsg..tostring(i+1).."="..tostring(v).."/";
+			debugMsg = debugMsg..tostring(i).."="..tostring(v).."/";
 		end
 		debugMsg = debugMsg.."]"
 		DBM.AddMsg(debugMsg);
@@ -2783,6 +2802,74 @@ function is_array(table)
     end
 
     return max
+end 
+
+local running
+local length
+local currentLength 
+local simonSays
+
+function DBM.Simon(...)
+	
+	if arg2 == "SPELL_CAST_SUCCESS" then
+		if arg4 == UnitName("player") and arg10 == DBM_SIMONSTART then
+			running = true
+			length = 1
+			currentLength = 0
+			simonSays = ""
+			DBM.AddMsg("Starting Simon Says")
+
+		elseif arg4 == DBM_SIMON_NAME then
+
+			if running then
+
+				simonSays = simonSays.."->"
+
+				if arg9 == 40245 then --GREEN
+					simonSays = simonSays.."Green"
+				elseif arg9 == 40246 then --RED
+					simonSays = simonSays.."Red"
+				elseif arg9 == 40247 then --YELLOW
+					simonSays = simonSays.."Yellow"
+				elseif arg9 == 40244 then --BLUE
+					simonSays = simonSays.."Blue"
+				end
+				
+				currentLength = currentLength + 1
+				if length == currentLength then
+					running = false
+					DBM.AddMsg(simonSays)
+				end
+
+			elseif not running then
+				currentLength = currentLength - 1
+				if currentLength == 0 and length < 10 then
+					running = true
+					length = length + 1
+					simonSays = "" 
+					DBM.AddMsg("Starting Round "..length.."!")
+				elseif length == 10 then
+					running = false
+					length = 1
+					currentLength = 0
+					simonsSays = ""
+					DBM.AddMsg("You finished Simon Says!")
+				end
+			end
+		end
+
+	elseif arg2 == "SPELL_DAMAGE" and running == false then		
+		currentLength = 0
+		simonSays = ""
+		running = true
+		DBM.AddMsg("Restarting Round "..length.."!")
+
+	else
+		
+		DBM.Debugging(...)
+		
+	end
+
 end 
 --------------------
 --Special Warnings--
